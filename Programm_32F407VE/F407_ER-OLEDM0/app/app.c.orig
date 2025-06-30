@@ -1,0 +1,197 @@
+#include "app.h"
+
+RTC_t rtc;
+uint8_t count_RTC=0;
+
+
+
+ssd1306_t str_SSD1306;
+
+bmp180_t str_BMP180;
+
+uint32_t data;
+
+
+
+
+
+void ExecutorTerminal_USART_Irq(void)
+{
+
+    USART1_ReadChar(receivedChar); // Читаем из консоли
+
+    if (count_size_buf >= SIZE_BUF_USART)
+    {
+        count_size_buf = 0;
+
+        __disable_irq();
+
+        while (I2C_Master_Transmit(I2C1, I2C_ADDRESS, (uint8_t*)rezultReadConsol, BUFFER_SIZE_I2C, 10) != 0)
+        {
+            Error_Handler();
+        }
+
+
+        while (I2C_Master_Receive(I2C1, I2C_ADDRESS, (uint8_t*)rezultReadI2C, BUFFER_SIZE_I2C, 10) != 0)
+        {
+            Error_Handler();
+        }
+
+        __enable_irq();
+
+        USART1_SetString(rezultReadI2C);
+
+        LED7();
+    }
+    else
+    {
+        rezultReadConsol[count_size_buf] = receivedChar_;
+        count_size_buf++;
+    }
+}
+
+/*main*/
+
+int main()
+{
+    Init_LED();
+    Init_USART1(BAUND_RATE);
+    Init_I2C(I2C1);
+
+    /* */
+
+    str_BMP180.adress_I2C = BMP180_I2C_ADDR;
+    str_BMP180.instance = I2C1;
+
+    str_SSD1306.adress_I2C = SSD1306_I2C_ADDR;
+    str_SSD1306.instance = I2C1;
+
+    /* */
+    int count = 0;
+    /* */
+    BMP180_Init(&str_BMP180);
+
+    SSD1306_Init(&str_SSD1306);
+
+
+    SSD1306_Fill(SSD1306_COLOR_WHITE);
+    /* */
+    SSD1306_GotoXY(&str_SSD1306, 20, 0);
+    SSD1306_Puts(&str_SSD1306, "DZ", &Font_11x18, 1);
+    SSD1306_GotoXY(&str_SSD1306, 10, 30);
+    SSD1306_Puts(&str_SSD1306, "xxx", &Font_16x26, 1);
+    SSD1306_UpdateScreen(&str_SSD1306);
+    SSD1306_Clear(&str_SSD1306);
+
+    /*------------*/
+    rtc.time.Hours = 14;
+    rtc.time.Minutes = 30;
+    rtc.time.Seconds = 10;
+
+    rtc.date.Year = 25;
+    rtc.date.Month = 6;
+    rtc.date.Date = 9;
+
+
+
+    RTC_INIT(&rtc);
+
+    char buff[20];
+		char buff1[20];
+		
+		uint32_t addr = 0x08010000;
+    /*------------*/
+
+    FLASH_Unlock();
+    // Адрес для записи
+    FLASH_EraseSector( GetSector( addr ), VoltageRange_3 );;
+    FLASH_ProgramWord(addr, 0xDEADBACF);
+
+    data = FLASH_Read(addr);
+    FLASH_Lock();
+
+
+    while (1)
+    {
+
+        RTC_GetTime(&rtc);
+
+        RTC_GetDate(&rtc);
+
+        sprintf(buff, "Time: %02d:%02d:%02d", rtc.time.Hours, rtc.time.Minutes, rtc.time.Seconds);
+        SSD1306_GotoXY(&str_SSD1306, 0, 40);
+        SSD1306_Puts(&str_SSD1306, buff, &Font_7x10, 1);
+
+        sprintf(buff, "Date: %02d:%02d:%02d", rtc.date.Date, rtc.date.Month, rtc.date.Year);
+        SSD1306_GotoXY(&str_SSD1306, 0, 50);
+        SSD1306_Puts(&str_SSD1306, buff, &Font_7x10, 1);
+        SSD1306_UpdateScreen(&str_SSD1306);
+
+				//Sprintf_M(buff, "Count: ", data);
+//				sprintf(buff, "D: %d", data);
+//        SSD1306_GotoXY(&str_SSD1306, 0, 00);
+//        SSD1306_Puts(&str_SSD1306, buff, &Font_7x10, 1);
+
+
+//        Sprintf_M(buff, "Count: ", str_BMP180->countT);
+//        SSD1306_GotoXY(str_SSD1306, 0, 00);
+//        SSD1306_Puts(str_SSD1306, buff, &Font_7x10, 1);
+
+//        Sprintf_M(buff, "Temp: ", str_BMP180->temperature);
+//        SSD1306_GotoXY(str_SSD1306, 0, 10);
+//        SSD1306_Puts(str_SSD1306, buff, &Font_7x10, 1);
+//        USART1_SetString(buff);
+
+//        Sprintf_M(buff, "Press: ", str_BMP180->pressure_RTUT_STOLB);
+//        SSD1306_GotoXY(str_SSD1306, 0, 20);
+//        SSD1306_Puts(str_SSD1306, buff, &Font_7x10, 1);
+//        USART1_SetString(buff);
+
+//        Sprintf_M(buff, "Alt: ", str_BMP180->altitude);
+//        SSD1306_GotoXY(str_SSD1306, 0, 30);
+//        SSD1306_Puts(str_SSD1306, buff, &Font_7x10, 1);
+//        USART1_SetString(buff);
+
+//        SSD1306_UpdateScreen(str_SSD1306);
+
+        if (Update_Termo_Press(&str_BMP180, &str_SSD1306, 1, count) != 0)
+        {
+            count = 0;
+        }
+        count++;
+
+    }
+    return 0;
+}
+
+
+void Execute_RTC_IRQ()
+{
+	  rtc.alarm.AlarmTime.Hours=rtc.time.Hours;
+    rtc.alarm.AlarmTime.Minutes=rtc.time.Minutes;
+    rtc.alarm.AlarmTime.Seconds=rtc.time.Seconds+TIME_IRQ;
+		
+		RTC_Init_Alarm(&rtc);
+		
+		count_RTC++;
+		
+		if(count_RTC > TIME_UPDATE_TERMO_PRESS)
+		{
+			count_RTC=0;
+			
+			
+		}
+
+}
+
+void Update_Termo_Press(bmp180_t* str_BMP180, bmp180_t *date_termo_press)
+{
+
+
+        BMP180_GetTemp(str_BMP180);
+        BMP180_GetPress(str_BMP180);
+        BMP180_GetAlt(str_BMP180);
+
+}
+
+

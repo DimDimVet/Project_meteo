@@ -1,0 +1,20 @@
+#include "button_F407.h"
+
+void Init_Button()
+{
+    Enable_RCC_Button();
+    Config_LED();
+}
+
+void Enable_RCC_Button()
+{
+		ENABLE_BIT(RCC->AHB1ENR,RCC_AHB1ENR_GPIOEEN);
+		
+		if (RCC->AHB1ENR & (1 << RCC_AHB1ENR_GPIOAEN_Pos)) {
+    // Тактирование GPIOA включено
+} else {
+    // Тактирование GPIOA отключено
+}
+		
+    //RCC->AHB1ENR |= 1 << RCC_AHB1ENR_GPIOAEN_Pos;
+}
