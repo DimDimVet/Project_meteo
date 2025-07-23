@@ -1,0 +1,35 @@
+Added Component: Designator=D4(LQFP100)
+Added Pin To Net: NetName=NetD4_2 Pin=D4-2
+Added Pin To Net: NetName=NetD4_3 Pin=D4-3
+Added Pin To Net: NetName=NetC15_2 Pin=D4-8
+Added Pin To Net: NetName=NetC16_2 Pin=D4-9
+Added Pin To Net: NetName=GND Pin=D4-10
+Added Pin To Net: NetName=+3.3ย Pin=D4-11
+Added Pin To Net: NetName=NetC8_1 Pin=D4-12
+Added Pin To Net: NetName=NetC9_1 Pin=D4-13
+Added Pin To Net: NetName=RST Pin=D4-14
+Added Pin To Net: NetName=+3.3ย Pin=D4-19
+Added Pin To Net: NetName=GND Pin=D4-20
+Added Pin To Net: NetName=+3.3ย Pin=D4-21
+Added Pin To Net: NetName=+3.3ย Pin=D4-22
+Added Pin To Net: NetName=GND Pin=D4-27
+Added Pin To Net: NetName=+3.3ย Pin=D4-28
+Added Pin To Net: NetName=NetD4_37 Pin=D4-37
+Added Pin To Net: NetName=NetC12_1 Pin=D4-49
+Added Pin To Net: NetName=+3.3ย Pin=D4-50
+Added Pin To Net: NetName=RxD Pin=D4-68
+Added Pin To Net: NetName=TxD Pin=D4-69
+Added Pin To Net: NetName=TMS Pin=D4-72
+Added Pin To Net: NetName=NetD4_73 Pin=D4-73
+Added Pin To Net: NetName=GND Pin=D4-74
+Added Pin To Net: NetName=+3.3ย Pin=D4-75
+Added Pin To Net: NetName=TCK Pin=D4-76
+Added Pin To Net: NetName=TDI Pin=D4-77
+Added Pin To Net: NetName=TDO Pin=D4-89
+Added Pin To Net: NetName=TRST Pin=D4-90
+Added Pin To Net: NetName=SCL Pin=D4-92
+Added Pin To Net: NetName=SDA Pin=D4-93
+Added Pin To Net: NetName=NetD4_94 Pin=D4-94
+Added Pin To Net: NetName=GND Pin=D4-99
+Added Pin To Net: NetName=+3.3ย Pin=D4-100
+Added Member To Class: ClassName=ศาสั.685623.177 Ý3 Member=Component D4 STM32F407VE
