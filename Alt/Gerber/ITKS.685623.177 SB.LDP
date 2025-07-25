@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: F:\Project_meteo\Alt\Meteo_prj\ITKS.685623.177 SB.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=itks.685623.177 sb-roundholes.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=itks.685623.177 sb-slotholes.txt|DrillLayers=gtl,gbl

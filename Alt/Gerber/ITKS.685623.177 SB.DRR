@@ -1,0 +1,19 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: ITKS.685623.177 SB.PcbDoc   25.07.2025  10:58:15
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : ITKS.685623.177 SB-RoundHoles.TXT
+ASCII SlotHoles File : ITKS.685623.177 SB-SlotHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.3mm (12mil)                                             Round             77        PTH        382.07mm (15.04inch)
+T2      1mm (39mil)                                               Round             10        PTH        27.94mm (1.10inch)
+T3      1mm (39mil)                                               Slot              2         PTH        26.50mm (1.04inch)
+T4      3mm (118mil)                                              Round             3         PTH        104.00mm (4.09inch)
+T5      1.5mm (59mil)                                             Round             2         NPTH       4.50mm (0.18inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              94
+
+Total Processing Time (hh:mm:ss) : 00:00:00
